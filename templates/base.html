@@ -1,0 +1,45 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- Favicons -->
+
+    {% include "base/css.html" %}
+    <title> {% block title %} Home {% endblock %} </title>
+
+</head>
+
+<body id="page-top">
+
+    {% comment %}
+    <!-- <h3 style="float: right; color: rgb(255, 255, 255);">{{  message  }}</h3> -->
+    {% endcomment%}
+    <!--Header starts-->
+
+
+
+
+
+    {% comment %} {% include "base/messages.html" %} {% endcomment %}
+
+
+    {% block content %}
+
+
+    {% endblock content %}
+
+
+
+    {% include "base/js.html" %}
+
+
+
+</body>
+
+</html>
