@@ -1,14 +1,20 @@
 {% extends "base.html" %} {% load static %} {% block content %}
-<div class="kt-mainpanel">
-  <div class="kt-pagebody">
-    <div class="row row-sm">
-      <div class="col-lg-12">
+<div class="contianer mt-5">
+<h1 class="text-center">Address</h1>
+  {% comment %} <div class="kt-pagebody"> {% endcomment %}
+    <div class="row row-sm main-content">
+
+        <div class="col-lg-2 col-md-2 col-sm-2">
+        </div>
+        <!-- col-6 -->
+
+
         <div class="col-lg-3 col-md-3 col-sm-3">
-          <div class="card">
+          <div class="card mg-t-20">
             <div class="card-body">
             <label for="district">District</label>
               <input class="form-control" type="text" name="" id="district">
-              <div  class='result'>
+              <div  class='result' id='district-result'>
               </div>
             </div>
           </div>
@@ -22,7 +28,7 @@
               <div class="card-body">
 <label for="city">city</label>
 <input class="form-control" type="text" name="" id="city">
-<div class="cityclass"></div>
+<div class="cityclass" id='city-result'></div>
               </div>
               </div>
             </div>
@@ -36,21 +42,23 @@
             <div class="card mg-t-20">
               <div class="card">
                 <div class="card-body">
-                  <label for="pincode">city</label>
+                  <label for="pincode">pincode</label>
 <input class="form-control" type="text" name="" id="pincode">
-            <div class="pincodeclass"></div>
+            <div class="pincodeclass" id='pincode-result'></div>
               </div>
               <!-- card -->
             </div>
             <!-- col-6 -->
-          </div>
+
+  
+
+
           <!-- col-sm -->
         </div>
         <!-- row -->
-      </div>
-      <!-- kt-pagebody -->
+
     </div>
-    <!-- kt-mainpanel -->
+    <!-- kt-mainpanel-container -->
 
     {% endblock content %}
   </div>

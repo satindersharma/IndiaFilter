@@ -287,6 +287,6 @@ label.custom-control-label h5::selected {
 
 
 
-option.dropdown-item.citems{
+option.dropdown-item.citems, option.dropdown-item{
   cursor: pointer;
 }

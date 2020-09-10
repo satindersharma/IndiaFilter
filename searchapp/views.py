@@ -32,16 +32,32 @@ class SearchData(TemplateView):
         print('diss',district)
         print('city',city)
         print('pincode',pincode)
+
+        if city and ((not district) and (not pincode)):
+            print('only city')
+            k = India.objects.filter(taluk__icontains=city).values('districtname','taluk').distinct()
+            print(k.query)
+            return JsonResponse(list(k), safe=False)
+        if pincode and ((not city) and (not district)):
+            k = India.objects.filter(pincode=pincode).values('districtname','taluk','pincode').distinct()
+
+            return JsonResponse(list(k), safe=False)
+
         if district and city and pincode:
             k = India.objects.filter(districtname__exact=district,taluk__exact=city).values('districtname','taluk','pincode').distinct()
 
             return JsonResponse(list(k), safe=False)
         if district and city:
             k = India.objects.filter(districtname__iexact=district).values('districtname','taluk').distinct()
-
             return JsonResponse(list(k), safe=False)
         if district:
             k = India.objects.filter(districtname__icontains=district).values('districtname','taluk').distinct()
-
+            # print(k)
             return JsonResponse(list(k), safe=False)
         return render(request, "home.html", context)
+class UniqueData(TemplateView):
+    def get(self, request, format=None):
+        k =India.objects.values('districtname','taluk','pincode').distinct()
+        print(k.query)
+        print(len(k))
+        return JsonResponse(list(k), safe=False)

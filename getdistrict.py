@@ -16,7 +16,13 @@ django.setup()
 from searchapp.models import India
 
 
-
+def getuniquejson():
+    k = India.objects.values('districtname','taluk','pincode').distinct().annotate(hereiscount = Count('taluk')).order_by('-hereiscount')
+    # k = India.objects.values('pincode').annotate(Max('pincode'),Min('pincode')).distinct()
+    print(k.query)
+    print('total',k.count())
+    for x in k[:10]:
+        print(x)
 
 def getdist(ds=None,ct=None):
 
@@ -34,5 +40,6 @@ def getdist(ds=None,ct=None):
         for x in k[:10]:
             print(x)
 
-getdist('ludhiana','Ludhiana')
+# getdist('ludhiana','Ludhiana')
 # getdist('ludhiana')
+getuniquejson()
