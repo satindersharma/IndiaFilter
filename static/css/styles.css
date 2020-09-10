@@ -284,3 +284,9 @@ label.custom-control-label h5::selected {
 .ui-timepicker-standard {
   color: inherit;
 }
+
+
+
+option.dropdown-item.citems{
+  cursor: pointer;
+}
