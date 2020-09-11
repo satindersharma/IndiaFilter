@@ -25,7 +25,7 @@ class Home(TemplateView):
 
 class SearchData(TemplateView):
     def get(self, request, format=None):
-
+        context = {}
         district = request.GET.get('district')
         city = request.GET.get('city')
         pincode = request.GET.get('pincode')
@@ -35,7 +35,7 @@ class SearchData(TemplateView):
 
         if city and ((not district) and (not pincode)):
             print('only city')
-            k = India.objects.filter(taluk__icontains=city).values('districtname','taluk').distinct()
+            k = India.objects.filter(taluk__istartswith=city).values('districtname','taluk','pincode').distinct()
             print(k.query)
             return JsonResponse(list(k), safe=False)
         if pincode and ((not city) and (not district)):
