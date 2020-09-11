@@ -15,7 +15,7 @@ var frompinreq = false;
 var fromdistreq = false;
 var fromcityreq = false;
 
-function fetchdata(dist, city, pincode) {
+async function fetchdata(dist, city, pincode) {
   city = city || "";
   pincode = pincode || "";
   $.ajax({
@@ -102,20 +102,22 @@ function fillonclickCity(element) {
   console.log(element);
 
   if (fromcityreq && !fromdistreq && !frompinreq) {
+    console.log("city split run");
     cityid.innerHTML = "";
     selectdistrict.value = extractLastfun(element);
     selectcity.value = splitfun(element).slice(0, -1).join(" ");
-    selectpincode.value = ""
+    console.log(splitfun(element));
+    selectpincode.value = "";
+    fromcityreq = false;
     fetchdata(
       (dist = selectdistrict.value),
       (city = selectcity.value),
       (pincode = "pincode")
     );
-    fromcityreq = false;
   } else if (fromdistreq && !frompinreq && !fromcityreq) {
     selectcity.value = element;
     cityid.innerHTML = "";
-    console.log("fecthed after city");
+    console.log("run from disrtrict");
 
     fetchdata(
       (dist = finaldistrictvalue),
@@ -127,7 +129,6 @@ function fillonclickCity(element) {
     cityid.innerHTML = "";
     console.log("fecthed after city");
   }
-  cityid.innerHTML = "";
 }
 
 // function for City on click event
@@ -192,6 +193,7 @@ function fillonclickPin(element) {
   console.log(element);
   selectpincode.value = element;
   pincode_result.innerHTML = "";
+  selectpincode.style.color = "";
   // fetchdata((dist = element), (city = "city"),(pincode='pincode'));
 }
 
@@ -242,7 +244,7 @@ function FillFromPin(Data) {
     cityid.innerHTML = "";
     selectpincode.style.color = "";
     selectdistrict.value = Data[0]["districtname"] || "";
-    // selectcity.value = Data[0]["taluk"] || "";
+    selectcity.value = Data[0]["taluk"] || "";
 
     if (Data.length > 1) {
       cityid.innerHTML = "";
