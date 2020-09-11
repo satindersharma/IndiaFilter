@@ -24,8 +24,8 @@ function fetchdata(dist, city, pincode) {
     dataType: "json",
     success: function (data) {
       Data = data;
-      if (dist == "" && city == "" && pincode) {
-        console.log("fill from data run");
+      if (dist == "" && city == "" && pincode && frompinreq) {
+        console.log("fill from pin data run");
         FillFromPin(Data);
       } else if (city == "" && pincode == "") {
         console.log("disrtict run");
@@ -105,27 +105,29 @@ function fillonclickCity(element) {
     cityid.innerHTML = "";
     selectdistrict.value = extractLastfun(element);
     selectcity.value = splitfun(element).slice(0, -1).join(" ");
+    selectpincode.value = ""
     fetchdata(
       (dist = selectdistrict.value),
       (city = selectcity.value),
       (pincode = "pincode")
     );
     fromcityreq = false;
-  } else {
-    if(fromdistreq || frompinreq && !fromcityreq){
-      selectcity.value = element;
-      cityid.innerHTML = "";
-      console.log("fecthed after city");
-  
-      fetchdata(
-        (dist = finaldistrictvalue),
-        (city = element),
-        (pincode = "pincode")
-      );
-    }
-    
+  } else if (fromdistreq && !frompinreq && !fromcityreq) {
+    selectcity.value = element;
+    cityid.innerHTML = "";
+    console.log("fecthed after city");
 
+    fetchdata(
+      (dist = finaldistrictvalue),
+      (city = element),
+      (pincode = "pincode")
+    );
+  } else {
+    selectcity.value = element;
+    cityid.innerHTML = "";
+    console.log("fecthed after city");
   }
+  cityid.innerHTML = "";
 }
 
 // function for City on click event
@@ -139,6 +141,8 @@ function cityselectfunction() {
 
 // function for City to add data to dropdown
 function citydrop(Data) {
+  uniquecity.clear();
+  uniquedistrictandcity.clear();
   console.log("data for city", Data);
   Data.forEach(function (p, o) {
     uniquecity.add(p["taluk"]);
@@ -169,6 +173,8 @@ selectcity.addEventListener("keyup", (event) => {
   if (event.target.value.length > 2) {
     result.innerHTML = "";
     cityid.innerHTML = "";
+    uniquecity.clear();
+    uniquedistrictandcity.clear();
     uniquedistrict.clear();
     fromdistreq = false;
     frompinreq = false;
@@ -176,7 +182,7 @@ selectcity.addEventListener("keyup", (event) => {
     if (fromcityreq && !fromdistreq && !frompinreq) {
       fetchdata((dist = ""), (city = event.target.value), (pincode = ""));
     } else {
-      fetchdata((dist = ""), (city = event.target.value), (pincode = ""));
+      // fetchdata((dist = ""), (city = event.target.value), (pincode = ""));
     }
   }
 });
@@ -233,11 +239,15 @@ function FillFromPin(Data) {
     console.log("1 part run");
     selectdistrict.value = "";
     selectcity.value = "";
+    cityid.innerHTML = "";
     selectpincode.style.color = "";
     selectdistrict.value = Data[0]["districtname"] || "";
     // selectcity.value = Data[0]["taluk"] || "";
+
     if (Data.length > 1) {
-      frompinreq = true;
+      cityid.innerHTML = "";
+      uniquecity.clear();
+      uniquedistrictandcity.clear();
       citydrop(Data);
     }
   } else {
