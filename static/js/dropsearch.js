@@ -30,14 +30,12 @@ async function fetchdata(dist, city, pincode) {
       } else if (city == "" && pincode == "") {
         console.log("disrtict run");
         districtdrop(Data);
-      } else if (pincode == "" && dist) {
+      } else if ((pincode == "" && dist) || (fromcityreq && !fromdistreq && !frompinreq) ) {
         console.log("city run");
         finaldistrictvalue = dist;
         cityid.innerHTML = "";
         citydrop(Data);
-      } else if (fromcityreq && !fromdistreq && !frompinreq) {
-        citydrop(Data);
-      } else {
+      }  else {
         console.log("pin run");
         pincodedrop(Data);
       }
@@ -70,6 +68,7 @@ function fillonclickDistrict(element) {
 
   if (fromdistreq && !frompinreq && !fromcityreq) {
     fetchdata((dist = element), (city = "city"));
+    fromdistreq = false
   }
 }
 
@@ -100,8 +99,7 @@ function districtdrop(Data) {
 // function for City fill data on click on dropdown
 function fillonclickCity(element) {
   console.log(element);
-
-  if (fromcityreq && !fromdistreq && !frompinreq) {
+  if (fromcityreq) {
     console.log("city split run");
     cityid.innerHTML = "";
     selectdistrict.value = extractLastfun(element);
@@ -114,20 +112,29 @@ function fillonclickCity(element) {
       (city = selectcity.value),
       (pincode = "pincode")
     );
-  } else if (fromdistreq && !frompinreq && !fromcityreq) {
+  } 
+  // else if (fromdistreq) {
+  //   selectcity.value = element;
+  //   cityid.innerHTML = "";
+  //   console.log("run from disrtrict");
+  //   fromdistreq = false
+  //   fetchdata(
+  //     (dist = finaldistrictvalue),
+  //     (city = element),
+  //     (pincode = "pincode")
+  //   );
+  // }
+  
+   else {
     selectcity.value = element;
     cityid.innerHTML = "";
-    console.log("run from disrtrict");
-
-    fetchdata(
+    console.log("fecthed after city");
+        fetchdata(
       (dist = finaldistrictvalue),
       (city = element),
       (pincode = "pincode")
     );
-  } else {
-    selectcity.value = element;
-    cityid.innerHTML = "";
-    console.log("fecthed after city");
+    // frompinreq = false
   }
 }
 
@@ -180,20 +187,22 @@ selectcity.addEventListener("keyup", (event) => {
     fromdistreq = false;
     frompinreq = false;
     fromcityreq = true;
-    if (fromcityreq && !fromdistreq && !frompinreq) {
+    if (fromcityreq) {
       fetchdata((dist = ""), (city = event.target.value), (pincode = ""));
     } else {
       // fetchdata((dist = ""), (city = event.target.value), (pincode = ""));
+      fromcityreq = false
     }
   }
 });
 
-// function for pincode to fill on click
+// function for pincode to fill on click on dropdown
 function fillonclickPin(element) {
   console.log(element);
   selectpincode.value = element;
   pincode_result.innerHTML = "";
   selectpincode.style.color = "";
+  frompinreq = false
   // fetchdata((dist = element), (city = "city"),(pincode='pincode'));
 }
 
@@ -218,6 +227,7 @@ function pincodedrop(Data) {
     }
   });
   uniquepin.clear();
+  
   pinselectfunction();
 }
 
