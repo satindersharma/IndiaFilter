@@ -30,12 +30,15 @@ async function fetchdata(dist, city, pincode) {
       } else if (city == "" && pincode == "") {
         console.log("disrtict run");
         districtdrop(Data);
-      } else if ((pincode == "" && dist) || (fromcityreq && !fromdistreq && !frompinreq) ) {
+      } else if (
+        (pincode == "" && dist) ||
+        (fromcityreq && !fromdistreq && !frompinreq)
+      ) {
         console.log("city run");
         finaldistrictvalue = dist;
         cityid.innerHTML = "";
         citydrop(Data);
-      }  else {
+      } else {
         console.log("pin run");
         pincodedrop(Data);
       }
@@ -51,10 +54,11 @@ selectdistrict.addEventListener("keyup", (event) => {
   if (event.target.value.length > 2) {
     result.innerHTML = "";
     uniquedistrict.clear();
-    fetchdata(event.target.value, (city = ""));
     fromdistreq = true;
     frompinreq = false;
     fromcityreq = false;
+
+    fetchdata(event.target.value, (city = ""));
   }
 });
 
@@ -65,11 +69,11 @@ function fillonclickDistrict(element) {
   result.innerHTML = "";
   selectcity.value = "";
   selectpincode.value = "";
+  fromdistreq = true;
+  frompinreq = false;
+  fromcityreq = false;
 
-  if (fromdistreq && !frompinreq && !fromcityreq) {
-    fetchdata((dist = element), (city = "city"));
-    fromdistreq = false
-  }
+  fetchdata((dist = element), (city = "city"));
 }
 
 // function for District to handle click event
@@ -99,6 +103,24 @@ function districtdrop(Data) {
 // function for City fill data on click on dropdown
 function fillonclickCity(element) {
   console.log(element);
+  console.log(
+    "from city request",
+    fromcityreq,
+    "by function",
+    fillonclickCity.name
+  );
+  console.log(
+    "from district request",
+    fromdistreq,
+    "by function",
+    fillonclickCity.name
+  );
+  console.log(
+    "from pin request",
+    frompinreq,
+    "by function",
+    fillonclickCity.name
+  );
   if (fromcityreq) {
     console.log("city split run");
     cityid.innerHTML = "";
@@ -106,36 +128,37 @@ function fillonclickCity(element) {
     selectcity.value = splitfun(element).slice(0, -1).join(" ");
     console.log(splitfun(element));
     selectpincode.value = "";
-    fromcityreq = false;
+    // fromcityreq = false;
     fetchdata(
       (dist = selectdistrict.value),
       (city = selectcity.value),
       (pincode = "pincode")
     );
-  } 
-  // else if (fromdistreq) {
-  //   selectcity.value = element;
-  //   cityid.innerHTML = "";
-  //   console.log("run from disrtrict");
-  //   fromdistreq = false
-  //   fetchdata(
-  //     (dist = finaldistrictvalue),
-  //     (city = element),
-  //     (pincode = "pincode")
-  //   );
-  // }
-  
-   else {
+    fromcityreq = false;
+  } else if (fromdistreq) {
     selectcity.value = element;
     cityid.innerHTML = "";
-    console.log("fecthed after city");
-        fetchdata(
+    console.log("run from disrtrict");
+    fromdistreq = false;
+    fetchdata(
       (dist = finaldistrictvalue),
       (city = element),
       (pincode = "pincode")
     );
-    // frompinreq = false
+  } else if (frompinreq) {
+    selectcity.value = element;
+    cityid.innerHTML = "";
+    console.log("fecthed after city");
+    fetchdata(
+      (dist = finaldistrictvalue),
+      (city = element),
+      (pincode = "pincode")
+    );
+    frompinreq = false;
+  } else {
+    fromcityreq = false;
   }
+  return false;
 }
 
 // function for City on click event
@@ -149,6 +172,14 @@ function cityselectfunction() {
 
 // function for City to add data to dropdown
 function citydrop(Data) {
+  console.log("from city request", fromcityreq, "by function", citydrop.name);
+  console.log(
+    "from district request",
+    fromdistreq,
+    "by function",
+    citydrop.name
+  );
+  console.log("from pin request", frompinreq, "by function", citydrop.name);
   uniquecity.clear();
   uniquedistrictandcity.clear();
   console.log("data for city", Data);
@@ -187,22 +218,38 @@ selectcity.addEventListener("keyup", (event) => {
     fromdistreq = false;
     frompinreq = false;
     fromcityreq = true;
-    if (fromcityreq) {
-      fetchdata((dist = ""), (city = event.target.value), (pincode = ""));
-    } else {
-      // fetchdata((dist = ""), (city = event.target.value), (pincode = ""));
-      fromcityreq = false
-    }
+    fetchdata((dist = ""), (city = event.target.value), (pincode = ""));
   }
 });
 
 // function for pincode to fill on click on dropdown
 function fillonclickPin(element) {
+  console.log(
+    "from city request",
+    fromcityreq,
+    "by function",
+    fillonclickPin.name
+  );
+  console.log(
+    "from district request",
+    fromdistreq,
+    "by function",
+    fillonclickPin.name
+  );
+  console.log(
+    "from pin request",
+    frompinreq,
+    "by function",
+    fillonclickPin.name
+  );
   console.log(element);
   selectpincode.value = element;
   pincode_result.innerHTML = "";
   selectpincode.style.color = "";
-  frompinreq = false
+  frompinreq = false;
+  fromdistreq = false;
+  fromcityreq = false;
+
   // fetchdata((dist = element), (city = "city"),(pincode='pincode'));
 }
 
@@ -227,7 +274,7 @@ function pincodedrop(Data) {
     }
   });
   uniquepin.clear();
-  
+
   pinselectfunction();
 }
 
