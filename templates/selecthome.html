@@ -1,0 +1,77 @@
+{% extends "base.html" %} {% load static %} 
+{% block title%} Select Home{% endblock title%}
+{% block content %}
+
+
+<div class="contianer mt-5">
+  <h1 class="text-center">Address</h1>
+  {% comment %}
+  <div class="kt-pagebody">
+    {% endcomment %}
+    <div class="row row-sm main-content">
+      <div class="col-lg-2 col-md-2 col-sm-2"></div>
+      <!-- col-6 -->
+
+      <div class="col-lg-3 col-md-3 col-sm-3">
+        <div class="card mg-t-20">
+          <div class="card-body">
+            <label for="district">District</label>
+            <select
+              class="js-example-basic-single"
+              id="district-select"
+              name="district"
+              style="width: 100%"
+            >
+            </select>
+          </div>
+        </div>
+        <!-- card -->
+      </div>
+      <!-- col-6 -->
+
+      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3">
+        <div class="card mg-t-20">
+          <div class="card">
+            <div class="card-body">
+              <label for="city">city</label>
+            <select
+              class="js-example-basic-single"
+              id="city-select"
+              name="city"
+              style="width: 100%"
+            >
+            </select>
+            </div>
+          </div>
+        </div>
+        <!-- card -->
+      </div>
+      <!-- col-6 -->
+
+      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3">
+        <div class="card mg-t-20">
+          <div class="card">
+            <div class="card-body">
+              <label for="pincode">pincode</label>
+            <select
+              class="js-example-basic-single"
+              id="pincode-select"
+              name="pincode"
+              style="width: 100%"
+            >
+            </select>
+            </div>
+            <!-- card -->
+          </div>
+          <!-- col-6 -->
+
+          <!-- col-sm -->
+        </div>
+        <!-- row -->
+      </div>
+      <!-- kt-mainpanel-container -->
+
+      {% endblock content %}
+    </div>
+  </div>
+</div>

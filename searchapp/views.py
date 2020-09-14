@@ -23,41 +23,51 @@ class Home(TemplateView):
         return render(request, "home.html", context)
 
 
+class SelectHome(TemplateView):
+    template_name = 'selecthome.html'
+
+
 class SearchData(TemplateView):
     def get(self, request, format=None):
         context = {}
         district = request.GET.get('district')
         city = request.GET.get('city')
         pincode = request.GET.get('pincode')
-        print('diss',district)
-        print('city',city)
-        print('pincode',pincode)
+        print('diss', district)
+        print('city', city)
+        print('pincode', pincode)
 
         if city and ((not district) and (not pincode)):
             print('only city')
-            k = India.objects.filter(taluk__istartswith=city).values('districtname','taluk','pincode').distinct()
+            k = India.objects.filter(taluk__istartswith=city).values(
+                'districtname', 'taluk', 'pincode').distinct()
             print(k.query)
             return JsonResponse(list(k), safe=False)
         if pincode and ((not city) and (not district)):
-            k = India.objects.filter(pincode=pincode).values('districtname','taluk','pincode').distinct()
+            k = India.objects.filter(pincode=pincode).values(
+                'districtname', 'taluk', 'pincode').distinct()
 
             return JsonResponse(list(k), safe=False)
 
         if district and city and pincode:
-            k = India.objects.filter(districtname__exact=district,taluk__exact=city).values('districtname','taluk','pincode').distinct()
+            k = India.objects.filter(districtname__exact=district, taluk__exact=city).values(
+                'districtname', 'taluk', 'pincode').distinct()
 
             return JsonResponse(list(k), safe=False)
         if district and city:
-            k = India.objects.filter(districtname__iexact=district).values('districtname','taluk').distinct()
+            k = India.objects.filter(districtname__iexact=district).values(
+                'districtname', 'taluk').distinct()
             return JsonResponse(list(k), safe=False)
         if district:
             k = India.objects.filter(districtname__icontains=district).values('districtname','taluk').distinct()
             # print(k)
             return JsonResponse(list(k), safe=False)
         return render(request, "home.html", context)
+
+
 class UniqueData(TemplateView):
     def get(self, request, format=None):
-        k =India.objects.values('districtname','taluk','pincode').distinct()
+        k = India.objects.values('districtname', 'taluk', 'pincode').distinct()
         print(k.query)
         print(len(k))
         return JsonResponse(list(k), safe=False)
